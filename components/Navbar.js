@@ -41,7 +41,7 @@ const Navbar = ({ clearCart, addtoCart, removeFromCart, cart, subtTotal }) => {
                 <FiLogIn className='text-xl' />
               </button>
             </div>
-            <div ref={ref} className="w-72 h-[100vh] sidecart absolute top-0 right-0 bg-pink-100 p-10 transition-transform transform translate-x-full">
+            <div ref={ref} className="w-72 h-[100vh] sidecart absolute top-0 right-0 bg-pink-100 py-10 px-8 transition-transform transform translate-x-full">
               <h2 className="font-bold text-xl text-center">Shopping Cart</h2>
               <span onClick={toggleCart} className="absolute top-5 right-2"><AiFillCloseCircle className='cursor-pointer text-xl text-pink-500' /></span>
               <ol className='list-decimal'>
@@ -54,8 +54,8 @@ const Navbar = ({ clearCart, addtoCart, removeFromCart, cart, subtTotal }) => {
                     </div>
                   </li>
                 })}
-
               </ol>
+              <p className='total mb-2 font-bold'>Subtotal: ₹{subtTotal}</p>
               <div className="flex">
                 <Link href={'/checkout'} passHref><button className="flex mx-2 text-white bg-pink-500 border-0 py-2 px-2 focus:outline-none hover:bg-pink-600 rounded text-sm"><BsFillBagCheckFill className='m-1' />Checkout</button></Link>
                 <button onClick={clearCart} className="flex mx-2 text-white bg-pink-500 border-0 py-2 px-2 focus:outline-none hover:bg-pink-600 rounded text-sm">Clear Cart</button>
