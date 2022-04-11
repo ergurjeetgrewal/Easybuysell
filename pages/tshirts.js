@@ -10,7 +10,7 @@ const Tshirts = () => {
       </Head>
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
-          <div className="flex flex-wrap -m-4">
+          <div className="flex flex-wrap justify-center">
             <Link href={''} passHref><div className="lg:w-1/5 md:w-1/2 p-4 w-full cursor-pointer shadow-lg m-1">
               <a className="block relative  rounded overflow-hidden">
                 <img alt="ecommerce" className="h-[30vh] md:h-[34vh] block md:m-0 m-auto" src="https://m.media-amazon.com/images/I/81D76vnOAsS._UL1500_.jpg" />
