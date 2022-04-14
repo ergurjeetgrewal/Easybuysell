@@ -28,18 +28,18 @@ const Navbar = ({ clearCart, addtoCart, removeFromCart, cart, subtTotal }) => {
             </a>
             </Link>
             <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-              <Link href={'/tshirts'}><a className="mr-5 hover:text-gray-900">Tshirts</a></Link>
-              <Link href={'/mugs'}><a className="mr-5 hover:text-gray-900">Mugs</a></Link>
-              <Link href={'/hoodies'}><a className="mr-5 hover:text-gray-900">Hoodies</a></Link>
-              <Link href={'/stickers'}><a className="mr-5 hover:text-gray-900">Stickers</a></Link>
+              <Link href={'/tshirts'}><a className="mr-5 hover:text-gray-900 font-bold">Tshirts</a></Link>
+              <Link href={'/mugs'}><a className="mr-5 hover:text-gray-900 font-bold">Mugs</a></Link>
+              <Link href={'/hoodies'}><a className="mr-5 hover:text-gray-900 font-bold">Hoodies</a></Link>
+              <Link href={'/stickers'}><a className="mr-5 hover:text-gray-900 font-bold">Stickers</a></Link>
             </nav>
-            <div>
+            <div className='flex'> 
               <button onClick={toggleCart} className="inline-flex items-center bg-pink-100 border-0 py-1 px-3 mr-2 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
                 <AiOutlineShoppingCart className='text-xl' />
               </button>
-              <button className="inline-flex items-center bg-pink-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
+              <Link href={'/login'} passHref><button className="inline-flex items-center bg-pink-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Login
                 <FiLogIn className='text-xl' />
-              </button>
+              </button></Link>
             </div>
             <div ref={ref} className="w-72 h-[100vh] sidecart absolute top-0 right-0 bg-pink-100 py-10 px-8 transition-transform transform translate-x-full">
               <h2 className="font-bold text-xl text-center">Shopping Cart</h2>
@@ -49,7 +49,7 @@ const Navbar = ({ clearCart, addtoCart, removeFromCart, cart, subtTotal }) => {
                 {Object.keys(cart).map((k) => {
                   return <li key={k}>
                     <div className="item flex my-3">
-                      <div className='w-2/3 font-semibold'>{cart[k].name}</div>
+                      <div className='w-2/3 font-semibold'>{cart[k].name} ({cart[k].size}/{cart[k].variant})</div>
                       <div className='w-1/3 font-semibold justify-center items-center flex'><AiOutlineMinusCircle className='text-2xl' onClick={() => { removeFromCart(k, 1) }} /><span className='mx-2'>{cart[k].qty}</span><AiOutlinePlusCircle onClick={() => { addtoCart(k, 1) }} className='text-2xl' /></div>
                     </div>
                   </li>
