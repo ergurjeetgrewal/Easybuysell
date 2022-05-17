@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import { useRouter } from 'next/router';
-import Order from '../models/order';
+import Order from '../models/Order';
 import mongoose from "mongoose";
 
 const Orderr = ({ order }) => {
