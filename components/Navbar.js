@@ -1,10 +1,18 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { AiOutlineShoppingCart, AiFillCloseCircle, AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import { FiLogIn } from "react-icons/fi";
 import { BsFillBagCheckFill } from "react-icons/bs";
 
-const Navbar = ({ clearCart, addtoCart, removeFromCart, cart, subtTotal }) => {
+const Navbar = ({ clearCart, addtoCart, removeFromCart, cart, subtTotal, user, setUser }) => {
+  const router = useRouter();
+  const logout = () => {
+    localStorage.clear();
+    setUser({ login: false })
+    router.push('/login');
+  }
+  const [dropdown, setDropdown] = useState(false);
   const ref = useRef()
   const toggleCart = () => {
     if (ref.current.classList.contains('translate-x-full')) {
@@ -24,7 +32,7 @@ const Navbar = ({ clearCart, addtoCart, removeFromCart, cart, subtTotal }) => {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
               </svg>
-              <span className="ml-3 text-xl">Sell Anywhere</span>
+              <span className="ml-3 text-xl">Easy Buysell</span>
             </a>
             </Link>
             <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
@@ -33,15 +41,31 @@ const Navbar = ({ clearCart, addtoCart, removeFromCart, cart, subtTotal }) => {
               <Link href={'/hoodies'}><a className="mr-5 hover:text-gray-900 font-bold">Hoodies</a></Link>
               <Link href={'/stickers'}><a className="mr-5 hover:text-gray-900 font-bold">Stickers</a></Link>
             </nav>
-            <div className='flex'> 
+            <div className='flex'>
               <button onClick={toggleCart} className="inline-flex items-center bg-pink-100 border-0 py-1 px-3 mr-2 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
                 <AiOutlineShoppingCart className='text-xl' />
               </button>
-              <Link href={'/login'} passHref><button className="inline-flex items-center bg-pink-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Login
+              <div className="cursor-pointer items-center cart flex">
+                <span onMouseOver={() => setDropdown(true)} onMouseLeave={() => { setDropdown(false) }}>
+                  {dropdown && <div onMouseOver={() => setDropdown(true)} onMouseLeave={() => { setDropdown(false) }} className="absolute bg-white shadow-lg border mt-7 py-4 rounded-md px-5 w-32">
+                    <ul>
+                      <Link href={'/myaccount'}><a><li className='py-1 hover:text-pink-700 text-sm font-bold'>My Account</li></a></Link>
+                      <Link href={'/orders'}><a><li className='py-1 hover:text-pink-700 text-sm font-bold'>My Orders</li></a></Link>
+                      <li onClick={logout} className='py-1 hover:text-pink-700 text-sm font-bold'>Logout</li>
+                    </ul>
+                  </div>}
+                  {user.login && <button className="inline-flex items-center bg-pink-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Account</button>}
+                </span>
+              </div>
+              {!user.login && <Link href={'/login'} passHref><button className="inline-flex items-center bg-pink-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Login
                 <FiLogIn className='text-xl' />
-              </button></Link>
+              </button></Link>}
             </div>
-            <div ref={ref} className="w-72 h-[100vh] sidecart absolute top-0 right-0 bg-pink-100 py-10 px-8 transition-transform transform translate-x-full">
+
+
+
+            {/* cart */}
+            <div ref={ref} className={`w-72 h-[100vh] sideCart absolute top-0 overflow-y-scroll right-0 bg-pink-100 py-10 px-8 transition-transform transform ${Object.keys(cart).length !== 0 ? 'translate-x-0' : 'translate-x-full'}`}>
               <h2 className="font-bold text-xl text-center">Shopping Cart</h2>
               <span onClick={toggleCart} className="absolute top-5 right-2"><AiFillCloseCircle className='cursor-pointer text-xl text-pink-500' /></span>
               <ol className='list-decimal'>

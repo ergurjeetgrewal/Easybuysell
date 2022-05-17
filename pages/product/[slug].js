@@ -3,14 +3,15 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import FProduct from '../../models/Product';
 import mongoose from "mongoose";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
-const Product = ({ addtoCart, product, variants }) => {
+const Product = ({ addtoCart, product, variants, buyNow }) => {
   product = JSON.parse(product);
   variants = JSON.parse(variants);
   const router = useRouter()
-  const { slug } = router.query
-  const [pincode, setPincode] = useState()
+  const [pincode, setPincode] = useState({ pincode: '' })
   const [delivery, setDelivery] = useState(<></>)
   const [color, setColor] = useState(product.color)
   const [size, setSize] = useState(product.size)
@@ -20,20 +21,50 @@ const Product = ({ addtoCart, product, variants }) => {
   }
   const checkServiceability = (e) => {
     e.preventDefault()
-    fetch(`http://localhost:3000/api/pincode?pincode=${pincode.pincode}`)
+    fetch(`${process.env.NEXT_PUBLIC_HOST_URI}/api/pincode`)
       .then(res => res.json())
       .then(data => {
-        if (data.message) {
+        if (Object.keys(data).includes(pincode.pincode)) {
           setDelivery(<div className='text-green-700 mt-3 text-sm'>Yah! delivery available</div>)
+          toast.success('Delivery available!', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
         else {
           setDelivery(<div className='text-red-700 mt-3 text-sm'>Sorry, delivery not available yet</div>)
+          toast.error('Sorry, Pin code not serviceable!', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
       })
   }
+
   return <>
+    <ToastContainer
+      position="top-right"
+      autoClose={1000}
+      hideProgressBar={false}
+      newestOnTop
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+    />
     <Head>
-      <title>Sellanywhere - {product.title}</title>
+      <title>Easy Buysell - {product.title}</title>
       <meta name="description" content="Sellanywhere app to sell your products" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
@@ -111,7 +142,7 @@ const Product = ({ addtoCart, product, variants }) => {
             </div>
             <div className="flex">
               <span className="title-font font-medium text-2xl text-gray-900">₹{product.price}</span>
-              <button className="flex ml-4 md:ml-8 text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded">Buy Now</button>
+              <button onClick={() => { buyNow(product.slug, 1, product.price, product.title, product.size, product.color) }} className="flex ml-4 md:ml-8 text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded">Buy Now</button>
               <button onClick={() => { addtoCart(product.slug, 1, product.price, product.title, product.size, product.color) }} className="flex ml-4 md:ml-8 text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded">Add to Cart</button>
               {/* <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                 <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
@@ -138,9 +169,8 @@ export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
-
   let product = await FProduct.findOne({ slug: slug });
-  let variants = await FProduct.find({ title: product.title });
+  let variants = await FProduct.find({ title: product.title, category: product.category });
   let colorSizeSlug = {}; //{red: {XL: {slug: 'red-XL'}}} temp
   for (let item of variants) {
     if (Object.keys(colorSizeSlug).includes(item.color)) {

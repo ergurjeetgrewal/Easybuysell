@@ -9,7 +9,7 @@ const Tshirts = ({ products }) => {
   return (
     <>
       <Head>
-        <title>Sellanywhere - Tshirts</title>
+        <title>Easy Buysell - Tshirts</title>
       </Head>
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">

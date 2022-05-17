@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Sellanywhere - Shop</title>
+        <title>Easy Buysell - Shop</title>
         <meta name="description" content="Sellanywhere app to sell your products" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
