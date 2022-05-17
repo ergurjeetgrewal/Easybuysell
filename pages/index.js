@@ -9,7 +9,7 @@ export default function Home() {
         <meta name="description" content="Sellanywhere app to sell your products" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Image src="/home.jpg" alt="shop" width={1920} height={750} />
+      <Image src="https://images.unsplash.com/photo-1649859396073-13ff3244ec1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="shop" width={1920} height={750} />
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
