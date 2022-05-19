@@ -42,10 +42,13 @@ const Orderr = ({ order }) => {
 
 export async function getServerSideProps(context) {
   const { orderId } = context.query;
+  let order = []
   if (mongoose.connections[0].readyState) {
-    await mongoose.connect(process.env.MONGO_URI);
+    // await mongoose.connect(process.env.MONGO_URI);
+    order = []
   }
-  let order = await Order.findOne({ orderId: orderId });
+  await mongoose.connect(process.env.MONGO_URI);
+  order = await Order.findOne({ orderId: orderId });
   return {
     props: { order: JSON.stringify(order) },
   }
